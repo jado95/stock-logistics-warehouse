@@ -18,5 +18,7 @@
         'security/ir.model.access.csv',
         'views/product_cost_evaluation_history.xml',
         'views/stock_inventory_evaluation.xml', #DA
+        'reports/evaluation_report_template.xml',
+        'reports/stockevaluation_report.xml',
     ]
 }

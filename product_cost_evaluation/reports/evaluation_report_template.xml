@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_stockevaluation_document">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=o.company_id.partner_id.lang)" />
+            <div class="page">
+                <div class="oe_structure"/>
+
+                <h1 style="font-size: 44px;">
+                    <span t-if="o.state in ['draft']">Draft: </span>
+                    <span t-if="o.state in ['cancel']">Cancelled: </span>
+                    <span t-if="o.state in ['done']">Done: </span>
+
+                    <span t-field="o.name"/>
+                </h1>
+                <h1 style="font-size: 44px;">
+                    Date: <span t-field="o.date"/>
+                </h1>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Evaluation Date</th>
+                            <th class="text-left">Product</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-left">Stock Location</th>
+                            <th class="text-right">Last Purchase Cost</th>
+                            <th class="text-right">Average Weighted Product Unit Cost</th>
+                            <th class="text-right">Average Weighted Product Unit Purchase Cost</th>
+                            <th class="text-right">Standard Product Unit Cost</th>
+                            <th class="text-right">Standard Product Price</th>
+                            <th class="text-right">Real Market Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o.line_history_ids" t-as="line">
+                            <tr>
+                                <td>
+                                    <span t-field="line.date_evaluation"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.product_id.display_name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.product_qty"/>
+                                </td>
+                                <td>
+                                    <span t-field="line.location_id.display_name"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.last_purchase_cost"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.average_cost"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.average_purchase_cost"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.standard_cost"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.list_price"/>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="line.real_value"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="report_stockevaluation">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="product_cost_evaluation.report_stockevaluation_document" t-lang="o.company_id.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>
