@@ -25,7 +25,7 @@
                             <th class="text-right">Average Weighted Product Unit Purchase Cost</th>
 <!--                            <th class="text-right">Standard Product Unit Cost</th>-->
 <!--                            <th class="text-right">Standard Product Price</th>-->
-<!--                            <th class="text-right">Real Market Value</th>-->
+                            <th class="text-right">Real Market Value</th>
                         </tr>
                     </thead>
                     <tbody>
