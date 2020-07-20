@@ -2,6 +2,7 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.addons import decimal_precision as dp
+from datetime import datetime, date
 
 
 class StockInventoryEvaluation(models.Model):
@@ -120,12 +121,11 @@ class StockInventoryEvaluation(models.Model):
                                 purchase_info['last_date'] = line_sorted[0].invoice_id.date_invoice
                                 purchase_info['purchase_cost'] = line_sorted[0].price_unit
                             else:
-                                if line_sorted[0].invoice_id.date_invoice > purchase_info['last_date']:
-                                    purchase_info['last_date'] = line_sorted[0].invoice_id.date_invoice
-                                    purchase_info['purchase_cost'] = line_sorted[0].price_unit
-            # if not line.last_purchase_date or purchase_info['last_date'] > line.last_purchase_date:
+                                if type(purchase_info['last_date']) == date:
+                                    if line_sorted[0].invoice_id.date_invoice > purchase_info['last_date']:
+                                        purchase_info['last_date'] = line_sorted[0].invoice_id.date_invoice
+                                        purchase_info['purchase_cost'] = line_sorted[0].price_unit
             line.last_purchase_cost = purchase_info['purchase_cost']
-            # line.last_purchase_date = purchase_info['last_date']
 
     def get_average_purchase_cost(self):
         count_product = {}
