@@ -103,19 +103,23 @@ class StockInventoryEvaluation(models.Model):
             ]
             move_obj = self.env['stock.move']
             move_ids = move_obj.search(domain)
+            index = 0
+            last = {'date': '', 'last_pc': 0}
             for move in move_ids:
+                index += 1
                 if move.purchase_line_id.invoice_lines:
-                    inv_lines = move.purchase_line_id.invoice_lines.filtered(
-                        lambda x: x.invoice_id.state in ['open', 'paid'])
+                    inv_lines = move.purchase_line_id.invoice_lines.filtered(lambda x: x.invoice_id.state in ['open', 'paid'])
                     if inv_lines:
                         if move.purchase_line_id.qty_invoiced > 0:
-                            line_sorted = inv_lines.sorted(
-                                key=lambda l: l.invoice_id.date_invoice,
-                                reverse=True)
-                            last_purchase_cost = line_sorted[0].price_unit
-                            if last_purchase_cost:
-                                line.last_purchase_cost = last_purchase_cost
-                                continue
+                            line_sorted = inv_lines.sorted(key=lambda l: l.invoice_id.date_invoice, reverse=True)
+                            if index == 1:
+                                last['date'] = line_sorted[0].invoice_id.date_invoice
+                                last['last_pc'] = line_sorted[0].price_unit
+                            else:
+                                if line_sorted[0].invoice_id.date_invoice > last['date']:
+                                    last['date'] = line_sorted[0].invoice_id.date_invoice
+                                    last['last_pc'] = line_sorted[0].price_unit
+            line.last_purchase_cost = last['last_pc']
 
     def get_average_cost(self):
         count_product = {}
@@ -156,99 +160,100 @@ class StockInventoryEvaluation(models.Model):
         return total_qty, total_cost
 
     def action_start(self):
-        for inventory in self.filtered(lambda x: x.state not in ('done', 'cancel')):
+        for inventory in self.filtered(
+            lambda x: x.state not in ('done', 'cancel')):
             if not inventory.line_ids:
                 inventory._get_inventory_lines_values_new()
         return True
 
-    @api.multi
-    def price_calculation(self, line, evaluation_type, domain):
-        order = 'date desc, id desc'
-        move_obj = self.env['stock.move']
-        move_ids = move_obj.search(domain, order=order)
-        tuples = []
-        qty_to_go = line.product_qty
-        older_qty = line.product_qty
-        invoice_data_incomplete = False
-        flag = False
-        for move in move_ids:
-            for move_line in move.move_line_ids:
-                # Convert to UoM of product each time
-                uom_from = move.product_uom
-                qty_from = move_line.qty_done
-                product_qty = uom_from._compute_quantity(
-                    qty_from, move.product_id.uom_id)
-                # Get price from purchase line
-                purchase_price_unit = 0
-                price_unit = 0
-                last_purchase_cost = 0
-                if move.purchase_line_id:
-                    if move.purchase_line_id.invoice_lines:
-                        inv_lines = move.purchase_line_id.invoice_lines.filtered(
-                            lambda x: x.invoice_id.state in ['open', 'paid'])
-                        if inv_lines:
-                            price_unit = sum(
-                                l.price_subtotal for l in inv_lines) / sum(
-                                l.quantity for l in inv_lines)
-                            # check for last purchase cost
-                            if move.purchase_line_id.qty_invoiced > 0:
-                                line_sorted = inv_lines.sorted(
-                                    key=lambda l: l.invoice_id.date_invoice,
-                                    reverse=True)
-                                last_purchase_cost = line_sorted[0].price_unit
-                    else:
-                        invoice_data_incomplete = True
-                    purchase_price_unit = move.purchase_line_id.price_subtotal / move.purchase_line_id.product_qty
-                if evaluation_type == 'fifo':
-                    if qty_to_go - product_qty >= 0:
-                        tuples.append((move.product_id.id, product_qty,
-                                       price_unit, qty_from,
-                                       purchase_price_unit,
-                                       invoice_data_incomplete,
-                                       last_purchase_cost))
-                        qty_to_go -= product_qty
-                    else:
-                        tuples.append((
-                            move.product_id.id, qty_to_go, price_unit,
-                            qty_from * qty_to_go / product_qty,
-                            purchase_price_unit,
-                            invoice_data_incomplete,
-                            last_purchase_cost))
-                        flag = True
-                        break
-                if evaluation_type == 'lifo':
-                    # sale
-                    if move.location_id.usage == 'internal' and \
-                        move.location_dest_id.usage != 'internal':
-                        older_qty += product_qty
-                    # purchase
-                    if move.location_id.usage != 'internal' and \
-                        move.location_dest_id.usage == 'internal':
-                        older_qty -= product_qty
-                        if qty_to_go > older_qty > 0:
-                            tuples.append((move.product_id.id,
-                                           qty_to_go - older_qty, price_unit,
-                                           qty_from, purchase_price_unit,
-                                           invoice_data_incomplete,
-                                           last_purchase_cost))
-                            qty_to_go = older_qty
-                        elif qty_to_go > older_qty <= 0:
-                            tuples.append((move.product_id.id, qty_to_go,
-                                           price_unit,
-                                           qty_from * qty_to_go / product_qty,
-                                           purchase_price_unit,
-                                           invoice_data_incomplete,
-                                           last_purchase_cost))
-                            flag = True
-                            break
-                if evaluation_type == 'average':
-                    tuples.append((move.product_id.id, product_qty,
-                                   price_unit, qty_from, purchase_price_unit,
-                                   invoice_data_incomplete,
-                                   last_purchase_cost))
-            if flag:
-                break
-        return tuples
+    # @api.multi
+    # def price_calculation(self, line, evaluation_type, domain):
+    #     order = 'date desc, id desc'
+    #     move_obj = self.env['stock.move']
+    #     move_ids = move_obj.search(domain, order=order)
+    #     tuples = []
+    #     qty_to_go = line.product_qty
+    #     older_qty = line.product_qty
+    #     invoice_data_incomplete = False
+    #     flag = False
+    #     for move in move_ids:
+    #         for move_line in move.move_line_ids:
+    #             # Convert to UoM of product each time
+    #             uom_from = move.product_uom
+    #             qty_from = move_line.qty_done
+    #             product_qty = uom_from._compute_quantity(
+    #                 qty_from, move.product_id.uom_id)
+    #             # Get price from purchase line
+    #             purchase_price_unit = 0
+    #             price_unit = 0
+    #             last_purchase_cost = 0
+    #             if move.purchase_line_id:
+    #                 if move.purchase_line_id.invoice_lines:
+    #                     inv_lines = move.purchase_line_id.invoice_lines.filtered(
+    #                         lambda x: x.invoice_id.state in ['open', 'paid'])
+    #                     if inv_lines:
+    #                         price_unit = sum(
+    #                             l.price_subtotal for l in inv_lines) / sum(
+    #                             l.quantity for l in inv_lines)
+    #                         # check for last purchase cost
+    #                         if move.purchase_line_id.qty_invoiced > 0:
+    #                             line_sorted = inv_lines.sorted(
+    #                                 key=lambda l: l.invoice_id.date_invoice,
+    #                                 reverse=True)
+    #                             last_purchase_cost = line_sorted[0].price_unit
+    #                 else:
+    #                     invoice_data_incomplete = True
+    #                 purchase_price_unit = move.purchase_line_id.price_subtotal / move.purchase_line_id.product_qty
+    #             if evaluation_type == 'fifo':
+    #                 if qty_to_go - product_qty >= 0:
+    #                     tuples.append((move.product_id.id, product_qty,
+    #                                    price_unit, qty_from,
+    #                                    purchase_price_unit,
+    #                                    invoice_data_incomplete,
+    #                                    last_purchase_cost))
+    #                     qty_to_go -= product_qty
+    #                 else:
+    #                     tuples.append((
+    #                         move.product_id.id, qty_to_go, price_unit,
+    #                         qty_from * qty_to_go / product_qty,
+    #                         purchase_price_unit,
+    #                         invoice_data_incomplete,
+    #                         last_purchase_cost))
+    #                     flag = True
+    #                     break
+    #             if evaluation_type == 'lifo':
+    #                 # sale
+    #                 if move.location_id.usage == 'internal' and \
+    #                     move.location_dest_id.usage != 'internal':
+    #                     older_qty += product_qty
+    #                 # purchase
+    #                 if move.location_id.usage != 'internal' and \
+    #                     move.location_dest_id.usage == 'internal':
+    #                     older_qty -= product_qty
+    #                     if qty_to_go > older_qty > 0:
+    #                         tuples.append((move.product_id.id,
+    #                                        qty_to_go - older_qty, price_unit,
+    #                                        qty_from, purchase_price_unit,
+    #                                        invoice_data_incomplete,
+    #                                        last_purchase_cost))
+    #                         qty_to_go = older_qty
+    #                     elif qty_to_go > older_qty <= 0:
+    #                         tuples.append((move.product_id.id, qty_to_go,
+    #                                        price_unit,
+    #                                        qty_from * qty_to_go / product_qty,
+    #                                        purchase_price_unit,
+    #                                        invoice_data_incomplete,
+    #                                        last_purchase_cost))
+    #                         flag = True
+    #                         break
+    #             if evaluation_type == 'average':
+    #                 tuples.append((move.product_id.id, product_qty,
+    #                                price_unit, qty_from, purchase_price_unit,
+    #                                invoice_data_incomplete,
+    #                                last_purchase_cost))
+    #         if flag:
+    #             break
+    #     return tuples
 
 
 class InventoryLine(models.TransientModel):
@@ -332,15 +337,3 @@ class InventoryLine(models.TransientModel):
                     values['product_id']).uom_id.id
         res = super(InventoryLine, self).create(vals_list)
         return res
-
-    @api.constrains('product_id')
-    def _check_product_id(self):
-        """ As no quants are created for consumable products, it should not be possible do adjust
-        their quantity.
-        """
-        for line in self:
-            if line.product_id.type != 'product':
-                raise ValidationError(_(
-                    "You can only adjust storable products.") + '\n\n%s -> %s' % (
-                                          line.product_id.display_name,
-                                          line.product_id.type))
