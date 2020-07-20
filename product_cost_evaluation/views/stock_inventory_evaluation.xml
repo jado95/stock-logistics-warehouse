@@ -34,26 +34,53 @@
                             <field name="line_history_ids">
                                 <tree string="Line History" editable="bottom">
                                     <field name="inventory_evaluation_id" invisible="1"/>
-                                    <field name="name"/>
-                                    <field name="date_evaluation"/>
-                                    <field name="product_id"/>
-                                    <field name="product_qty"/>
-                                    <field name="company_id" groups="base.group_multi_company"/>
-                                    <field name="location_id"/>
-                                    <field name="fifo_cost" invisible="1"/>
-                                    <field name="fifo_purchase_cost" invisible="1"/>
-                                    <field name="lifo_cost" invisible="1"/>
-                                    <field name="lifo_purchase_cost" invisible="1"/>
-                                    <field name="last_purchase_cost"/>
-<!--                                    <field name="average_cost"/>-->
-                                    <field name="average_purchase_cost"/>
-                                    <field name="standard_cost"/>
-                                    <field name="list_price"/>
+                                    <field name="name" readonly="1"/>
+                                    <field name="date_evaluation" readonly="1"/>
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="product_qty" readonly="1"/>
+                                    <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                                    <field name="location_id" readonly="1"/>
+                                    <field name="fifo_cost" invisible="1" readonly="1"/>
+                                    <field name="fifo_purchase_cost" invisible="1" readonly="1"/>
+                                    <field name="lifo_cost" invisible="1" readonly="1"/>
+                                    <field name="lifo_purchase_cost" invisible="1" readonly="1"/>
+                                    <field name="last_purchase_cost" readonly="1"/>
+<!--                                    <field name="average_cost" readonly="1"/>-->
+                                    <field name="average_purchase_cost" readonly="1"/>
+                                    <field name="standard_cost" readonly="1"/>
+                                    <field name="list_price" readonly="1"/>
                                     <field name="real_value"/>
                                 </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="inventory_evaluation_id" invisible="1"/>
+                                            <field name="name"/>
+                                            <field name="date_evaluation"/>
+                                            <field name="company_id" groups="base.group_multi_company"/>
+                                            <field name="location_id"/>
+                                            <field name="fifo_purchase_cost" invisible="1"/>
+                                            <field name="lifo_purchase_cost" invisible="1"/>
+                                            <field name="average_cost"/>
+                                            <field name="standard_cost"/>
+                                            <field name="real_value"/>
+                                        </group>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="product_qty"/>
+                                            <field name="company_currency_id" groups="base.group_multi_company"/>
+                                            <field name="location_id"/>
+                                            <field name="fifo_cost" invisible="1"/>
+                                            <field name="lifo_cost" invisible="1"/>
+                                            <field name="last_purchase_cost"/>
+                                            <field name="average_purchase_cost"/>
+                                            <field name="list_price"/>
+                                        </group>
+                                    </group>
+                                </form>
                             </field>
                         </page>
-                        <page name="line" string="Line">
+                        <page name="line" string="Line" invisible="1">
                             <field name="line_ids">
                                 <tree string="Inventory Details" editable="bottom" decoration-info="product_qty != theoretical_qty"
                                       decoration-danger="theoretical_qty &lt; 0">

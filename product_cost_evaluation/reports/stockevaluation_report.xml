@@ -4,7 +4,7 @@
 
         <report
             id="action_report_stockevaluation"
-            string="Print"
+            string="Stock Inventory Evaluation"
             model="stock.inventory.evaluation"
             report_type="qweb-pdf"
             file="product_cost_evaluation.report_stockevaluation"

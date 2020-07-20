@@ -8,14 +8,9 @@
                 <div class="oe_structure"/>
 
                 <h1 style="font-size: 44px;">
-                    <span t-if="o.state in ['draft']">Draft: </span>
-                    <span t-if="o.state in ['cancel']">Cancelled: </span>
-                    <span t-if="o.state in ['done']">Done: </span>
-
                     <span t-field="o.name"/>
-                </h1>
-                <h1 style="font-size: 44px;">
-                    Date: <span t-field="o.date"/>
+                    <br/>
+                    <span t-field="o.date"/>
                 </h1>
 
                 <table class="table table-bordered">
@@ -25,16 +20,18 @@
                             <th class="text-left">Product</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-left">Stock Location</th>
-                            <th class="text-right">Last Purchase Cost</th>
-                            <th class="text-right">Average Weighted Product Unit Cost</th>
+<!--                            <th class="text-right">Last Purchase Cost</th>-->
+<!--                            <th class="text-right">Average Weighted Product Unit Cost</th>-->
                             <th class="text-right">Average Weighted Product Unit Purchase Cost</th>
-                            <th class="text-right">Standard Product Unit Cost</th>
-                            <th class="text-right">Standard Product Price</th>
-                            <th class="text-right">Real Market Value</th>
+<!--                            <th class="text-right">Standard Product Unit Cost</th>-->
+<!--                            <th class="text-right">Standard Product Price</th>-->
+<!--                            <th class="text-right">Real Market Value</th>-->
                         </tr>
                     </thead>
                     <tbody>
+                        <t t-set="sum_average_purchase_cost" t-value="0"/>
                         <t t-foreach="o.line_history_ids" t-as="line">
+                            <t t-set="sum_average_purchase_cost" t-value="sum_average_purchase_cost + line.average_purchase_cost"/>
                             <tr>
                                 <td>
                                     <span t-field="line.date_evaluation"/>
@@ -48,23 +45,34 @@
                                 <td>
                                     <span t-field="line.location_id.display_name"/>
                                 </td>
-                                <td class="text-right">
-                                    <span t-field="line.last_purchase_cost"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="line.average_cost"/>
-                                </td>
+<!--                                <td class="text-right">-->
+<!--                                    <span t-field="line.last_purchase_cost"/>-->
+<!--                                </td>-->
+<!--                                <td class="text-right">-->
+<!--                                    <span t-field="line.average_cost"/>-->
+<!--                                </td>-->
                                 <td class="text-right">
                                     <span t-field="line.average_purchase_cost"/>
                                 </td>
-                                <td class="text-right">
-                                    <span t-field="line.standard_cost"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="line.list_price"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="line.real_value"/>
+<!--                                <td class="text-right">-->
+<!--                                    <span t-field="line.standard_cost"/>-->
+<!--                                </td>-->
+<!--                                <td class="text-right">-->
+<!--                                    <span t-field="line.list_price"/>-->
+<!--                                </td>-->
+<!--                                <td class="text-right">-->
+<!--                                    <span t-field="line.real_value"/>-->
+<!--                                </td>-->
+                            </tr>
+                        </t>
+                        <t>
+                            <tr class="text-right">
+                                <td colspan="99">
+                                    <strong class="mr16">Total</strong>
+                                    <span
+                                        t-esc="sum_average_purchase_cost"
+                                        t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'
+                                    />
                                 </td>
                             </tr>
                         </t>

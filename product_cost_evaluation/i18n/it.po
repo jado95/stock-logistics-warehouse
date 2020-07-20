@@ -1,0 +1,382 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* product_cost_evaluation
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-20 15:09+0000\n"
+"PO-Revision-Date: 2020-07-20 15:09+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "<strong class=\"mr16\">Total</strong>"
+msgstr "<strong class=\"mr16\">Totale</strong>"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "Average Weighted Product Unit Purchase Cost"
+msgstr "Costo di acquisto unitario medio"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__average_cost
+msgid "Average weighted product unit cost"
+msgstr "Costo unitario medio"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__average_purchase_cost
+msgid "Average weighted product unit purchase cost"
+msgstr "Costo di acquisto unitario medio"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: product_cost_evaluation
+#: selection:stock.inventory.evaluation,state:0
+msgid "Cancelled"
+msgstr "Annullato"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__product_qty
+msgid "Checked Quantity"
+msgstr "Quantità controllata"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__company_id
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__company_id
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__company_id
+msgid "Company"
+msgstr "Azienda"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__company_currency_id
+msgid "Company Currency"
+msgstr "Valuta azienda"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,help:product_cost_evaluation.field_stock_inventory_evaluation_line__product_uom_category_id
+msgid "Conversion between Units of Measure can only occur if they belong to the same category. The conversion will be made based on the ratios."
+msgstr "Conversioni tra diverse unità di misura sono permesse solo se appartengono alla stessa categoria. La conversione sarà effettuata utilizzando i rapporti di conversione delle unità di misura."
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__create_uid
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__create_uid
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__create_date
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__create_date
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__date
+msgid "Date"
+msgstr "Data"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__display_name
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__display_name
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+#: selection:stock.inventory.evaluation,state:0
+msgid "Done"
+msgstr "Completato"
+
+#. module: product_cost_evaluation
+#: selection:stock.inventory.evaluation,state:0
+msgid "Draft"
+msgstr "Bozza"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,help:product_cost_evaluation.field_stock_inventory_evaluation_line__product_tracking
+msgid "Ensure the traceability of a storable product in your warehouse."
+msgstr "Garantisci la tracciabilità di un prodotto stoccabile nel tuo magazzino."
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "Evaluation Date"
+msgstr "Data "
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__date_evaluation
+msgid "Evaluation date"
+msgstr ""
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__fifo_cost
+msgid "FIFO product unit cost"
+msgstr "Costo unitario FIFO"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__fifo_purchase_cost
+msgid "FIFO product unit purchase cost"
+msgstr "Costo di acquisto unitario FIFO"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__id
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__id
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__id
+msgid "ID"
+msgstr ""
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,help:product_cost_evaluation.field_product_cost_evaluation_history__real_value
+msgid "If set (by hand), it is used in report instead of every other value."
+msgstr "Se impostato (manualmente), viene utilizzato nel rapporto anziché in ogni altro valore."
+
+#. module: product_cost_evaluation
+#: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:171
+#, python-format
+msgid "Incomplete invoice Data"
+msgstr "Dati di fattura incompleti"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__location_id
+msgid "Inventoried Location"
+msgstr "Ubicazione Inventariata"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__line_history_ids
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__line_ids
+msgid "Inventories"
+msgstr "Inventari"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__inventory_id
+msgid "Inventory"
+msgstr "Magazzino"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "Inventory Details"
+msgstr "Dettagli di inventario"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__inventory_evaluation_id
+msgid "Inventory Evaluation"
+msgstr ""
+
+#. module: product_cost_evaluation
+#: model:ir.model,name:product_cost_evaluation.model_stock_inventory_evaluation_line
+msgid "Inventory Evaluation Line"
+msgstr ""
+
+#. module: product_cost_evaluation
+#: model:ir.model,name:product_cost_evaluation.model_stock_inventory_line
+msgid "Inventory Line"
+msgstr "Riga di Inventario"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__inventory_location_id
+msgid "Inventory Location"
+msgstr "Ubicazione magazzino"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__lifo_cost
+msgid "LIFO product unit cost"
+msgstr "Costo unitario LIFO"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__lifo_purchase_cost
+msgid "LIFO product unit purchase cost"
+msgstr "Costo di acquisto unitario LIFO"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history____last_update
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation____last_update
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line____last_update
+msgid "Last Modified on"
+msgstr "Ultima modifica il"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__last_purchase_cost
+msgid "Last Purchase Cost"
+msgstr "Ultimo costo di acquisto"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__write_uid
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__write_uid
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__write_date
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__write_date
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "Line"
+msgstr "Linee"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "Line History"
+msgstr "Cronologia linee"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__location_id
+msgid "Location"
+msgstr "Ubicazione"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__prod_lot_id
+msgid "Lot/Serial Number"
+msgstr "Lotto/Numero di serie"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__name
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: product_cost_evaluation
+#: model:ir.model,name:product_cost_evaluation.model_product_product
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__product_id
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__product_id
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "Product"
+msgstr "Prodotto"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__product_uom_id
+msgid "Product Unit of Measure"
+msgstr "Unità di misura prodotto"
+
+#. module: product_cost_evaluation
+#: model:ir.actions.act_window,name:product_cost_evaluation.action_product_cost_evaluation
+msgid "Product cost evaluation history"
+msgstr "Cronologia della valutazione dei costi del prodotto"
+
+#. module: product_cost_evaluation
+#: model:ir.ui.menu,name:product_cost_evaluation.menu_product_cost_evaluation_history
+msgid "Product cost evaluations history"
+msgstr "Cronologia delle valutazioni dei costi del prodotto"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__product_qty
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "Quantity"
+msgstr "Quantità"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "Real Quantity"
+msgstr "Quantità reale"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__real_value
+msgid "Real market value"
+msgstr "Valore reale di mercato"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "Set to Draft"
+msgstr "Imposta a bozza"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__list_price
+msgid "Standard product price"
+msgstr "Prezzo standard"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__standard_cost
+msgid "Standard product unit cost"
+msgstr "Costo unitario standard"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "Start"
+msgstr "Inizio"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation__state
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__state
+msgid "Status"
+msgstr "Stato"
+
+#. module: product_cost_evaluation
+#: model:ir.actions.act_window,name:product_cost_evaluation.action_stock_inventory_evaluation
+#: model:ir.actions.report,name:product_cost_evaluation.action_report_stockevaluation
+#: model:ir.ui.menu,name:product_cost_evaluation.stock_inventory_evaluation_menu
+msgid "Stock Inventory Evaluation"
+msgstr ""
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "Stock Location"
+msgstr "Ubicazione di magazzino"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__location_id
+msgid "Stock location"
+msgstr "Ubicazione"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__theoretical_qty
+msgid "Theoretical Quantity"
+msgstr "Quantità teorica"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__product_tracking
+msgid "Tracking"
+msgstr "Traccia"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "UoM"
+msgstr "UdM"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__product_uom_category_id
+msgid "Uom category"
+msgstr "Categoria UdM"
+
+#. module: product_cost_evaluation
+#: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:457
+#, python-format
+msgid "You can only adjust storable products."
+msgstr "È possibile regolare solo prodotti memorizzabili."
+
+#. module: product_cost_evaluation
+#: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:25
+#: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:27
+#, python-format
+msgid "You must define a warehouse for the company: %s."
+msgstr "È necessario definire un magazzino per l'azienda: %s"
+
+#. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form
+msgid "e.g. Annual inventory"
+msgstr "e.s. Inventario Annuale"
+
+#. module: product_cost_evaluation
+#: model:ir.model,name:product_cost_evaluation.model_product_cost_evaluation_history
+msgid "product.cost.evaluation.history"
+msgstr ""
+
+#. module: product_cost_evaluation
+#: model:ir.model,name:product_cost_evaluation.model_stock_inventory_evaluation
+msgid "stock.inventory.evaluation"
+msgstr ""
+
