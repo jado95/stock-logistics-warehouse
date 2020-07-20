@@ -31,7 +31,12 @@
                     <tbody>
                         <t t-set="sum_average_purchase_cost" t-value="0"/>
                         <t t-foreach="o.line_history_ids" t-as="line">
-                            <t t-set="sum_average_purchase_cost" t-value="sum_average_purchase_cost + line.average_purchase_cost"/>
+                            <t t-if="line.real_value">
+                                <t t-set="sum_average_purchase_cost" t-value="sum_average_purchase_cost + line.real_value"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="sum_average_purchase_cost" t-value="sum_average_purchase_cost + line.average_purchase_cost"/>
+                            </t>
                             <tr>
                                 <td>
                                     <span t-field="line.date_evaluation"/>
@@ -60,9 +65,9 @@
 <!--                                <td class="text-right">-->
 <!--                                    <span t-field="line.list_price"/>-->
 <!--                                </td>-->
-<!--                                <td class="text-right">-->
-<!--                                    <span t-field="line.real_value"/>-->
-<!--                                </td>-->
+                                <td class="text-right">
+                                    <span t-field="line.real_value"/>
+                                </td>
                             </tr>
                         </t>
                         <t>
