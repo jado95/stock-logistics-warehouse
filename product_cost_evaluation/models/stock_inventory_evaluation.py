@@ -71,7 +71,7 @@ class StockInventoryEvaluation(models.Model):
                                                       self.date)
         self.create_inventory_line(res)
         self.get_last_purchase_cost()
-        self.get_average_cost()
+        self.get_average_purchase_cost()
 
     def create_inventory_line(self, res):
         product_model = self.env['product.product']
@@ -90,6 +90,7 @@ class StockInventoryEvaluation(models.Model):
             product_cost_eval_history_model.create(vals)
 
     def get_last_purchase_cost(self):
+        inventoried_location = self.location_id.id
         for line in self.line_history_ids:
             domain = [
                 ('company_id', '=', self.env.user.company_id.id),
@@ -100,6 +101,9 @@ class StockInventoryEvaluation(models.Model):
                 '|',
                 ('location_id.usage', '=', 'internal'),
                 ('location_dest_id.usage', '=', 'internal'),
+                '|',
+                ('location_id', '=', inventoried_location),
+                ('location_dest_id', '=', inventoried_location),
             ]
             move_obj = self.env['stock.move']
             move_ids = move_obj.search(domain)
@@ -119,14 +123,15 @@ class StockInventoryEvaluation(models.Model):
                                 if line_sorted[0].invoice_id.date_invoice > purchase_info['last_date']:
                                     purchase_info['last_date'] = line_sorted[0].invoice_id.date_invoice
                                     purchase_info['purchase_cost'] = line_sorted[0].price_unit
+            # if not line.last_purchase_date or purchase_info['last_date'] > line.last_purchase_date:
             line.last_purchase_cost = purchase_info['purchase_cost']
+            # line.last_purchase_date = purchase_info['last_date']
 
-    def get_average_cost(self):
+    def get_average_purchase_cost(self):
         count_product = {}
         for line in self.line_history_ids:
             if line.product_id.id not in count_product.keys():
-                total_qty, total_cost = self.compute_average_cost(
-                    line.product_id)
+                total_qty, total_cost = self.compute_average_purchase_cost(line.product_id)
                 if total_qty > 0:
                     average_purchase_cost = total_cost / total_qty
                     count_product[line.product_id.id] = average_purchase_cost
@@ -134,7 +139,8 @@ class StockInventoryEvaluation(models.Model):
                     count_product[line.product_id.id] = 0
             line.average_purchase_cost = count_product[line.product_id.id]
 
-    def compute_average_cost(self, product):
+    def compute_average_purchase_cost(self, product):
+        inventoried_location = self.location_id.id
         total_qty = 0
         total_cost = 0
         domain = [
@@ -146,17 +152,23 @@ class StockInventoryEvaluation(models.Model):
             '|',
             ('location_id.usage', '=', 'internal'),
             ('location_dest_id.usage', '=', 'internal'),
+            '|',
+            ('location_id', '=', inventoried_location),
+            ('location_dest_id', '=', inventoried_location),
         ]
         move_obj = self.env['stock.move']
         move_ids = move_obj.search(domain)
         for move in move_ids:
             if move.purchase_line_id.invoice_lines:
-                inv_lines = move.purchase_line_id.invoice_lines.filtered(
-                    lambda x: x.invoice_id.state in ['open', 'paid'])
+                inv_lines = move.purchase_line_id.invoice_lines.filtered(lambda x: x.invoice_id.state in ['open', 'paid'])
                 if inv_lines:
                     for line in inv_lines:
-                        total_cost += line.price_subtotal
-                        total_qty += line.quantity
+                        if move.location_id.usage == 'internal' and move.location_dest_id.usage != 'internal':
+                            total_cost -= line.price_subtotal
+                            total_qty -= line.quantity
+                        elif move.location_dest_id.usage == 'internal' and move.location_id.usage != 'internal':
+                            total_cost += line.price_subtotal
+                            total_qty += line.quantity
         return total_qty, total_cost
 
     def action_start(self):

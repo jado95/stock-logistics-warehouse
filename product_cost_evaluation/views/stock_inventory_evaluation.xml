@@ -45,7 +45,7 @@
                                     <field name="lifo_cost" invisible="1"/>
                                     <field name="lifo_purchase_cost" invisible="1"/>
                                     <field name="last_purchase_cost"/>
-                                    <field name="average_cost"/>
+<!--                                    <field name="average_cost"/>-->
                                     <field name="average_purchase_cost"/>
                                     <field name="standard_cost"/>
                                     <field name="list_price"/>
