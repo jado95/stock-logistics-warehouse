@@ -104,7 +104,7 @@ class StockInventoryEvaluation(models.Model):
             move_obj = self.env['stock.move']
             move_ids = move_obj.search(domain)
             index = 0
-            last = {'date': '', 'last_pc': 0}
+            purchase_info = {'last_date': '', 'purchase_cost': 0}
             for move in move_ids:
                 index += 1
                 if move.purchase_line_id.invoice_lines:
@@ -113,13 +113,13 @@ class StockInventoryEvaluation(models.Model):
                         if move.purchase_line_id.qty_invoiced > 0:
                             line_sorted = inv_lines.sorted(key=lambda l: l.invoice_id.date_invoice, reverse=True)
                             if index == 1:
-                                last['date'] = line_sorted[0].invoice_id.date_invoice
-                                last['last_pc'] = line_sorted[0].price_unit
+                                purchase_info['last_date'] = line_sorted[0].invoice_id.date_invoice
+                                purchase_info['purchase_cost'] = line_sorted[0].price_unit
                             else:
-                                if line_sorted[0].invoice_id.date_invoice > last['date']:
-                                    last['date'] = line_sorted[0].invoice_id.date_invoice
-                                    last['last_pc'] = line_sorted[0].price_unit
-            line.last_purchase_cost = last['last_pc']
+                                if line_sorted[0].invoice_id.date_invoice > purchase_info['last_date']:
+                                    purchase_info['last_date'] = line_sorted[0].invoice_id.date_invoice
+                                    purchase_info['purchase_cost'] = line_sorted[0].price_unit
+            line.last_purchase_cost = purchase_info['purchase_cost']
 
     def get_average_cost(self):
         count_product = {}
