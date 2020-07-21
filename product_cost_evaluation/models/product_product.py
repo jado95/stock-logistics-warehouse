@@ -12,6 +12,7 @@ class ProductProductInherit(models.Model):
         return res
 
     # from _compute_quantities_dict
+    # TODO Check se con all_products non serve più ripetere il doppio domani active a true o false
     def _compute_quantities_dict_by_location(self, from_date=False, to_date=False, location_id=False):
         all_products = self.search(['|', ('active', '=', False), ('active', '=', True)])
         domain_quant_loc, domain_move_in_loc, domain_move_out_loc = self._get_domain_locations_new_my(location_id)
