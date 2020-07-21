@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-20 15:09+0000\n"
-"PO-Revision-Date: 2020-07-20 15:09+0000\n"
+"POT-Creation-Date: 2020-07-21 09:21+0000\n"
+"PO-Revision-Date: 2020-07-21 09:21+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 
 #. module: product_cost_evaluation
 #: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
-msgid "<strong class=\"mr16\">Total</strong>"
-msgstr "<strong class=\"mr16\">Totale</strong>"
+msgid "<strong class=\"mr16\">Grand Total</strong>"
+msgstr "<strong class=\"mr16\">Totale Globale</strong>"
 
 #. module: product_cost_evaluation
 #: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
@@ -110,14 +110,9 @@ msgid "Ensure the traceability of a storable product in your warehouse."
 msgstr "Garantisci la tracciabilità di un prodotto stoccabile nel tuo magazzino."
 
 #. module: product_cost_evaluation
-#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
-msgid "Evaluation Date"
-msgstr "Data "
-
-#. module: product_cost_evaluation
 #: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__date_evaluation
 msgid "Evaluation date"
-msgstr ""
+msgstr "Data"
 
 #. module: product_cost_evaluation
 #: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__fifo_cost
@@ -138,7 +133,7 @@ msgstr ""
 
 #. module: product_cost_evaluation
 #: model:ir.model.fields,help:product_cost_evaluation.field_product_cost_evaluation_history__real_cost
-msgid "If set (by hand), it is used in report instead of every other value."
+msgid "If set (by hand), it is used in report instead of every other cost."
 msgstr "Se impostato (manualmente), viene utilizzato nel rapporto anziché in ogni altro costo."
 
 #. module: product_cost_evaluation
@@ -274,6 +269,16 @@ msgid "Product cost evaluations history"
 msgstr "Cronologia delle valutazioni dei costi del prodotto"
 
 #. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__purchase_value
+msgid "Purchase Value"
+msgstr "Valore Acquisto"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__purchase_qty
+msgid "Purchased Quantity"
+msgstr "Quantità Acquistata"
+
+#. module: product_cost_evaluation
 #: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__product_qty
 #: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
 msgid "Quantity"
@@ -286,7 +291,7 @@ msgstr "Quantità reale"
 
 #. module: product_cost_evaluation
 #: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__real_cost
-msgid "Real market value"
+msgid "Real market cost"
 msgstr "Costo reale di mercato"
 
 #. module: product_cost_evaluation
@@ -338,6 +343,11 @@ msgid "Theoretical Quantity"
 msgstr "Quantità teorica"
 
 #. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "Total"
+msgstr "Totale"
+
+#. module: product_cost_evaluation
 #: model:ir.model.fields,field_description:product_cost_evaluation.field_stock_inventory_evaluation_line__product_tracking
 msgid "Tracking"
 msgstr "Traccia"
@@ -353,13 +363,18 @@ msgid "Uom category"
 msgstr "Categoria UdM"
 
 #. module: product_cost_evaluation
+#: model_terms:ir.ui.view,arch_db:product_cost_evaluation.report_stockevaluation_document
+msgid "Value Line"
+msgstr "Valore riga"
+
+#. module: product_cost_evaluation
 #: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:457
 #, python-format
 msgid "You can only adjust storable products."
 msgstr "È possibile regolare solo prodotti memorizzabili."
 
 #. module: product_cost_evaluation
-#: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:25
+#: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:26
 #: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:27
 #, python-format
 msgid "You must define a warehouse for the company: %s."
@@ -380,12 +395,3 @@ msgstr ""
 msgid "stock.inventory.evaluation"
 msgstr ""
 
-#. module: product_cost_evaluation
-#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__purchase_qty
-msgid "Purchased Quantity"
-msgstr "Quantità Acquistata"
-
-#. module: product_cost_evaluation
-#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__purchase_value
-msgid "Purchase Value"
-msgstr "Valore Acquisto"

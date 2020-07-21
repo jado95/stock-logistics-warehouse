@@ -69,13 +69,13 @@
                             </t>
                             <t>
                                 <tr class="text-right">
-                                    <td colspan="3"
-                                        style="border-left: 1px solid #fff; border-right: 1px solid #fff;">
-                                        <strong class="mr16">Quantity</strong>
+                                    <td style="border-left: 1px solid #fff; border-right: 1px solid #fff;">
+                                        <strong class="mr16">Total <span t-esc="location.display_name"/> </strong>
+                                    </td>
+                                    <td colspan="2" style="border-right: 1px solid #fff;">
                                         <span t-esc="sum_product_qty"/>
                                     </td>
                                     <td colspan="2" style="border-right: 1px solid #fff;">
-                                        <strong class="mr16">Total</strong>
                                         <span
                                             t-esc="sum_average_purchase_cost"
                                             t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'
@@ -89,13 +89,15 @@
                         </t>
                         <t>
                             <tr class="text-right">
-                                <td colspan="3"
-                                    style="border-left: 1px solid #fff; border-right: 1px solid #fff; border-bottom: 1px solid #fff;">
-                                    <strong class="mr16">Quantity</strong>
+                                <td style="border-left: 1px solid #fff; border-right: 1px solid #fff; border-bottom: 1px solid #fff;">
+                                    <strong class="mr16">Grand Total</strong>
+                                </td>
+                                <td colspan="2"
+                                    style="border-right: 1px solid #fff; border-bottom: 1px solid #fff;">
                                     <span t-esc="qty"/>
                                 </td>
-                                <td colspan="2" style="border-right: 1px solid #fff; border-bottom: 1px solid #fff;">
-                                    <strong class="mr16">Total</strong>
+                                <td colspan="2"
+                                    style="border-right: 1px solid #fff; border-bottom: 1px solid #fff;">
                                     <span
                                         t-esc="total"
                                         t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'
