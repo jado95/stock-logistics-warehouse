@@ -51,7 +51,7 @@
                                     <field name="average_purchase_cost" readonly="1"/>
                                     <field name="standard_cost" readonly="1"/>
                                     <field name="list_price" readonly="1"/>
-                                    <field name="real_value"/>
+                                    <field name="real_cost"/>
                                 </tree>
                             </field>
                         </page>

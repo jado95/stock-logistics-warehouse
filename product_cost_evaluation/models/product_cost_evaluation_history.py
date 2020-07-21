@@ -64,8 +64,8 @@ class ProductCostEvaluationHistory(models.Model):
         string='Standard product price',
         currency_field='company_currency_id')
     # wip
-    real_value = fields.Monetary(
-        string='Real market value',
+    real_cost = fields.Monetary(
+        string='Real market cost',
         currency_field='company_currency_id',
         help='If set (by hand), it is used in report instead of every other'
-             ' value.')
+             ' cost.')

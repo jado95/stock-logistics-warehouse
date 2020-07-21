@@ -34,8 +34,8 @@
                             <t t-foreach="o.line_history_ids" t-as="line">
                                 <t t-if="line.product_qty != 0">
                                     <t t-if="location == line.location_id">
-                                        <t t-if="line.real_value">
-                                            <t t-set="value_line_cost" t-value="line.product_qty * line.real_value"/>
+                                        <t t-if="line.real_cost">
+                                            <t t-set="value_line_cost" t-value="line.product_qty * line.real_cost"/>
                                         </t>
                                         <t t-else="">
                                             <t t-set="value_line_cost" t-value="line.product_qty * line.average_purchase_cost"/>

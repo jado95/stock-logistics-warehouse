@@ -55,15 +55,11 @@ class StockInventoryEvaluation(models.Model):
         states={'draft': [('readonly', False)]},
         default=_default_location_id)
 
-    @api.multi
-    def action_cancel(self):
-        for stock in self:
-            stock.state = 'cancel'
-
-    @api.multi
-    def action_done(self):
-        for stock in self:
-            stock.state = 'done'
+    def action_start(self):
+        for inventory in self.filtered(lambda x: x.state not in ('done', 'cancel')):
+            if not inventory.line_ids:
+                inventory._get_inventory_lines_values_new()
+        return True
 
     def _get_inventory_lines_values_new(self):
         product_model = self.env['product.product']
@@ -177,11 +173,15 @@ class StockInventoryEvaluation(models.Model):
                     count_product[line.product_id.id] = 0
             line.average_purchase_cost = count_product[line.product_id.id]
 
-    def action_start(self):
-        for inventory in self.filtered(lambda x: x.state not in ('done', 'cancel')):
-            if not inventory.line_ids:
-                inventory._get_inventory_lines_values_new()
-        return True
+    @api.multi
+    def action_cancel(self):
+        for stock in self:
+            stock.state = 'cancel'
+
+    @api.multi
+    def action_done(self):
+        for stock in self:
+            stock.state = 'done'
 
 
 class InventoryLine(models.TransientModel):

@@ -137,9 +137,9 @@ msgid "ID"
 msgstr ""
 
 #. module: product_cost_evaluation
-#: model:ir.model.fields,help:product_cost_evaluation.field_product_cost_evaluation_history__real_value
+#: model:ir.model.fields,help:product_cost_evaluation.field_product_cost_evaluation_history__real_cost
 msgid "If set (by hand), it is used in report instead of every other value."
-msgstr "Se impostato (manualmente), viene utilizzato nel rapporto anziché in ogni altro valore."
+msgstr "Se impostato (manualmente), viene utilizzato nel rapporto anziché in ogni altro costo."
 
 #. module: product_cost_evaluation
 #: code:addons/product_cost_evaluation/models/stock_inventory_evaluation.py:171
@@ -285,9 +285,9 @@ msgid "Real Quantity"
 msgstr "Quantità reale"
 
 #. module: product_cost_evaluation
-#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__real_value
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__real_cost
 msgid "Real market value"
-msgstr "Valore reale di mercato"
+msgstr "Costo reale di mercato"
 
 #. module: product_cost_evaluation
 #: model_terms:ir.ui.view,arch_db:product_cost_evaluation.view_inventory_evaluation_form

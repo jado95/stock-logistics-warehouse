@@ -18,7 +18,7 @@
                         <field name="lifo_purchase_cost" invisible="1"/>
                         <field name="average_cost"/>
                         <field name="standard_cost"/>
-                        <field name="real_value"/>
+                        <field name="real_cost"/>
                     </group>
                     <group>
                         <field name="product_id"/>
@@ -57,7 +57,7 @@
                 <field name="average_purchase_cost"/>
                 <field name="standard_cost"/>
                 <field name="list_price"/>
-                <field name="real_value"/>
+                <field name="real_cost"/>
             </tree>
         </field>
     </record>
