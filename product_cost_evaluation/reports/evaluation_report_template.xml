@@ -16,66 +16,88 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th class="text-left">Evaluation Date</th>
+                            <th class="text-left">Stock Location</th>
                             <th class="text-left">Product</th>
                             <th class="text-right">Quantity</th>
-                            <th class="text-left">Stock Location</th>
-<!--                            <th class="text-right">Last Purchase Cost</th>-->
-<!--                            <th class="text-right">Average Weighted Product Unit Cost</th>-->
                             <th class="text-right">Average Weighted Product Unit Purchase Cost</th>
-<!--                            <th class="text-right">Standard Product Unit Cost</th>-->
-<!--                            <th class="text-right">Standard Product Price</th>-->
-<!--                            <th class="text-right">Real Market Value</th>-->
+                            <th class="text-right">Value Line</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <t t-set="total" t-value="0"/>
+                        <t t-set="qty" t-value="0"/>
                         <t t-set="sum_average_purchase_cost" t-value="0"/>
-                        <t t-foreach="o.line_history_ids" t-as="line">
-                            <t t-if="line.real_value">
-                                <t t-set="sum_average_purchase_cost" t-value="sum_average_purchase_cost + line.real_value"/>
+                        <t t-set="value_line_cost" t-value="0"/>
+                        <t t-set="sum_product_qty" t-value="0"/>
+                        <t t-set="count_location" t-value="o.mapped('line_history_ids.location_id')"/>
+                        <t t-foreach="count_location" t-as="location">
+                            <t t-foreach="o.line_history_ids" t-as="line">
+                                <t t-if="line.product_qty != 0">
+                                    <t t-if="location == line.location_id">
+                                        <t t-if="line.real_value">
+                                            <t t-set="value_line_cost" t-value="line.product_qty * line.real_value"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="value_line_cost" t-value="line.product_qty * line.average_purchase_cost"/>
+                                        </t>
+                                        <t t-set="sum_average_purchase_cost" t-value="sum_average_purchase_cost + value_line_cost"/>
+                                        <t t-set="total" t-value="total + value_line_cost"/>
+                                        <t t-set="sum_product_qty" t-value="sum_product_qty + line.product_qty"/>
+                                        <t t-set="qty" t-value="qty + line.product_qty"/>
+                                        <tr>
+                                            <td>
+                                                <span t-field="line.location_id.display_name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="line.product_id.display_name"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="line.product_qty"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span t-field="line.average_purchase_cost"/>
+                                            </td>
+                                            <td class="text-right">
+                                                <span
+                                                    t-esc="value_line_cost"
+                                                    t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'
+                                                />
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </t>
                             </t>
-                            <t t-else="">
-                                <t t-set="sum_average_purchase_cost" t-value="sum_average_purchase_cost + line.average_purchase_cost"/>
+                            <t>
+                                <tr class="text-right">
+                                    <td colspan="3"
+                                        style="border-left: 1px solid #fff; border-right: 1px solid #fff;">
+                                        <strong class="mr16">Quantity</strong>
+                                        <span t-esc="sum_product_qty"/>
+                                    </td>
+                                    <td colspan="2" style="border-right: 1px solid #fff;">
+                                        <strong class="mr16">Total</strong>
+                                        <span
+                                            t-esc="sum_average_purchase_cost"
+                                            t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'
+                                        />
+                                    </td>
+                                </tr>
                             </t>
-                            <tr>
-                                <td>
-                                    <span t-field="line.date_evaluation"/>
-                                </td>
-                                <td>
-                                    <span t-field="line.product_id.display_name"/>
-                                </td>
-                                <td class="text-right">
-                                    <span t-field="line.product_qty"/>
-                                </td>
-                                <td>
-                                    <span t-field="line.location_id.display_name"/>
-                                </td>
-<!--                                <td class="text-right">-->
-<!--                                    <span t-field="line.last_purchase_cost"/>-->
-<!--                                </td>-->
-<!--                                <td class="text-right">-->
-<!--                                    <span t-field="line.average_cost"/>-->
-<!--                                </td>-->
-                                <td class="text-right">
-                                    <span t-field="line.average_purchase_cost"/>
-                                </td>
-<!--                                <td class="text-right">-->
-<!--                                    <span t-field="line.standard_cost"/>-->
-<!--                                </td>-->
-<!--                                <td class="text-right">-->
-<!--                                    <span t-field="line.list_price"/>-->
-<!--                                </td>-->
-<!--                                <td class="text-right">-->
-<!--                                    <span t-field="line.real_value"/>-->
-<!--                                </td>-->
-                            </tr>
+                            <t t-set="sum_average_purchase_cost" t-value="0"/>
+                            <t t-set="value_line_cost" t-value="0"/>
+                            <t t-set="sum_product_qty" t-value="0"/>
                         </t>
                         <t>
                             <tr class="text-right">
-                                <td colspan="99">
+                                <td colspan="3"
+                                    style="border-left: 1px solid #fff; border-right: 1px solid #fff; border-bottom: 1px solid #fff;">
+                                    <strong class="mr16">Quantity</strong>
+                                    <span t-esc="qty"/>
+                                </td>
+                                <td colspan="2" style="border-right: 1px solid #fff; border-bottom: 1px solid #fff;">
                                     <strong class="mr16">Total</strong>
                                     <span
-                                        t-esc="sum_average_purchase_cost"
+                                        t-esc="total"
                                         t-options='{"widget": "monetary", "display_currency": res_company.currency_id}'
                                     />
                                 </td>
