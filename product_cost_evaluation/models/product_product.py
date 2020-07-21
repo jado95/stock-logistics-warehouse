@@ -1,28 +1,30 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models
-from odoo.tools import pycompat
 from odoo.tools.float_utils import float_round
 
 class ProductProductInherit(models.Model):
     _inherit = "product.product"
 
+    # from _compute_quantities
     def _compute_quantities_at_date(self, location_id, to_date):
         # res = self._compute_quantities_dict(self._context.get('lot_id'), self._context.get('owner_id'), self._context.get('package_id'), self._context.get('from_date'), to_date)
         res = self._compute_quantities_dict_by_location(self._context.get('from_date'), to_date, location_id)
         return res
 
+    # from _compute_quantities_dict
     def _compute_quantities_dict_by_location(self, from_date=False, to_date=False, location_id=False):
+        all_products = self.search(['|', ('active', '=', False), ('active', '=', True)])
         domain_quant_loc, domain_move_in_loc, domain_move_out_loc = self._get_domain_locations_new_my(location_id)
         # domain_quant_loc, domain_move_in_loc, domain_move_out_loc = self._get_domain_locations_my(location_id)
-        domain_quant = [('product_id', 'in', self.ids)] + domain_quant_loc
+        domain_quant = [('product_id', 'in', all_products.ids)] + domain_quant_loc
         dates_in_the_past = False
         # only to_date as to_date will correspond to qty_available
         to_date = fields.Datetime.to_datetime(to_date)
         if to_date and to_date < fields.Datetime.now():
             dates_in_the_past = True
 
-        domain_move_in = [('product_id', 'in', self.ids)] + domain_move_in_loc
-        domain_move_out = [('product_id', 'in', self.ids)] + domain_move_out_loc
+        domain_move_in = [('product_id', 'in', all_products.ids),'|', ('product_id.active', '=', False),('product_id.active', '=', True)] + domain_move_in_loc
+        domain_move_out = [('product_id', 'in', all_products.ids),'|', ('product_id.active', '=', False),('product_id.active', '=', True)] + domain_move_out_loc
         if dates_in_the_past:
             domain_move_in_done = list(domain_move_in)
             domain_move_out_done = list(domain_move_out)
@@ -46,7 +48,6 @@ class ProductProductInherit(models.Model):
             moves_in_res_past = dict((item['product_id'][0], item['product_qty']) for item in Move.read_group(domain_move_in_done, ['product_id', 'product_qty'], ['product_id'], orderby='id'))
             moves_out_res_past = dict((item['product_id'][0], item['product_qty']) for item in Move.read_group(domain_move_out_done, ['product_id', 'product_qty'], ['product_id'], orderby='id'))
         res = dict()
-        all_products = self.env['product.product'].search(['|', ('active', '=', False),('active', '=', True)])
         for product in all_products.with_context(prefetch_fields=False):
             product_id = product.id
             rounding = product.uom_id.rounding
@@ -63,20 +64,7 @@ class ProductProductInherit(models.Model):
                 precision_rounding=rounding)
         return res
 
-    # def _get_domain_locations_my(self, location):
-    #     location_ids = []
-    #     if location:
-    #         if isinstance(location, pycompat.integer_types):
-    #             location_ids = [location]
-    #         elif isinstance(location, pycompat.string_types):
-    #             domain = [('complete_name', 'ilike', location)]
-    #             if self.env.context.get('force_company', False):
-    #                 domain += [('company_id', '=', self.env.context['force_company'])]
-    #             location_ids = self.env['stock.location'].search(domain).ids
-    #         else:
-    #             location_ids = location
-    #     return self._get_domain_locations_new_my(location_ids.id, company_id=self.env.context.get('force_company', False), compute_child=self.env.context.get('compute_child', True))
-
+     #from _get_domain_locations_new
     def _get_domain_locations_new_my(self, location_id, company_id=False, compute_child=True):
         operator = compute_child and 'child_of' or 'in'
         domain = company_id and ['&', ('company_id', '=', company_id)] or []
