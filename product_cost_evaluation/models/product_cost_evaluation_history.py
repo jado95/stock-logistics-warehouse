@@ -32,10 +32,6 @@ class ProductCostEvaluationHistory(models.Model):
     location_id = fields.Many2one(
         comodel_name='stock.location',
         string='Stock location')
-    # lot_id = fields.Many2one(
-    #     comodel_name='stock.production.lot',
-    #     string='Lot/Serial Number',
-    #     ondelete='restrict')
     fifo_cost = fields.Monetary(
         string='FIFO product unit cost',
         currency_field='company_currency_id')
@@ -55,15 +51,12 @@ class ProductCostEvaluationHistory(models.Model):
     average_purchase_cost = fields.Monetary(
         string='Average weighted product unit purchase cost',
         currency_field='company_currency_id')
-    # fefo_cost = fields.Monetary(
-    #     string='FEFO product unit cost')
     standard_cost = fields.Monetary(
         string='Standard product unit cost',
         currency_field='company_currency_id')
     list_price = fields.Monetary(
         string='Standard product price',
         currency_field='company_currency_id')
-    # wip
     real_cost = fields.Monetary(
         string='Real market cost',
         currency_field='company_currency_id',

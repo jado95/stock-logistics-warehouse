@@ -46,7 +46,8 @@ class ProductProductInherit(models.Model):
             moves_in_res_past = dict((item['product_id'][0], item['product_qty']) for item in Move.read_group(domain_move_in_done, ['product_id', 'product_qty'], ['product_id'], orderby='id'))
             moves_out_res_past = dict((item['product_id'][0], item['product_qty']) for item in Move.read_group(domain_move_out_done, ['product_id', 'product_qty'], ['product_id'], orderby='id'))
         res = dict()
-        for product in self.with_context(prefetch_fields=False):
+        all_products = self.env['product.product'].search(['|', ('active', '=', False),('active', '=', True)])
+        for product in all_products.with_context(prefetch_fields=False):
             product_id = product.id
             rounding = product.uom_id.rounding
             res[product_id] = {}
