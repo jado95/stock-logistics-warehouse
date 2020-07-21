@@ -380,3 +380,12 @@ msgstr ""
 msgid "stock.inventory.evaluation"
 msgstr ""
 
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__purchase_qty
+msgid "Purchased Quantity"
+msgstr "Quantità Acquistata"
+
+#. module: product_cost_evaluation
+#: model:ir.model.fields,field_description:product_cost_evaluation.field_product_cost_evaluation_history__purchase_value
+msgid "Purchase Value"
+msgstr "Valore Acquisto"
