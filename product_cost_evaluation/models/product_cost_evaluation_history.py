@@ -16,6 +16,11 @@ class ProductCostEvaluationHistory(models.Model):
         string='Evaluation date')
     product_qty = fields.Float(
         string='Quantity')
+    purchase_qty = fields.Float(
+        string='Purchased Quantity')
+    purchase_value = fields.Monetary(
+        string='Purchase Value',
+        currency_field='company_currency_id')
     company_id = fields.Many2one(
         comodel_name='res.company',
         string='Company',

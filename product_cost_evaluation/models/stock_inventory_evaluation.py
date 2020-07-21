@@ -68,10 +68,10 @@ class StockInventoryEvaluation(models.Model):
     def _get_inventory_lines_values_new(self):
         product_model = self.env['product.product']
         product_ids = product_model.search([('type', '=', 'product')])
-        res = product_ids._compute_quantities_at_date(self.location_id,
-                                                      self.date)
+        res = product_ids._compute_quantities_at_date(self.location_id, self.date)
         self.create_inventory_line(res)
         self.get_last_purchase_cost()
+        self.get_totals_from_line()
         self.get_average_purchase_cost()
 
     def create_inventory_line(self, res):
@@ -127,19 +127,13 @@ class StockInventoryEvaluation(models.Model):
                                         purchase_info['purchase_cost'] = line_sorted[0].price_unit
             line.last_purchase_cost = purchase_info['purchase_cost']
 
-    def get_average_purchase_cost(self):
-        count_product = {}
+    def get_totals_from_line(self):
         for line in self.line_history_ids:
-            if line.product_id.id not in count_product.keys():
-                total_qty, total_cost = self.compute_average_purchase_cost(line.product_id)
-                if total_qty > 0:
-                    average_purchase_cost = total_cost / total_qty
-                    count_product[line.product_id.id] = average_purchase_cost
-                else:
-                    count_product[line.product_id.id] = 0
-            line.average_purchase_cost = count_product[line.product_id.id]
+            total_qty, total_value = self.compute_totals(line.product_id)
+            line.purchase_qty = total_qty
+            line.purchase_value = total_value
 
-    def compute_average_purchase_cost(self, product):
+    def compute_totals(self, product):
         inventoried_location = self.location_id.id
         total_qty = 0
         total_cost = 0
@@ -160,7 +154,8 @@ class StockInventoryEvaluation(models.Model):
         move_ids = move_obj.search(domain)
         for move in move_ids:
             if move.purchase_line_id.invoice_lines:
-                inv_lines = move.purchase_line_id.invoice_lines.filtered(lambda x: x.invoice_id.state in ['open', 'paid'])
+                inv_lines = move.purchase_line_id.invoice_lines.filtered(
+                    lambda x: x.invoice_id.state in ['open', 'paid'])
                 if inv_lines:
                     for line in inv_lines:
                         if move.location_id.usage == 'internal' and move.location_dest_id.usage != 'internal':
@@ -171,101 +166,22 @@ class StockInventoryEvaluation(models.Model):
                             total_qty += line.quantity
         return total_qty, total_cost
 
+    def get_average_purchase_cost(self):
+        count_product = {}
+        for line in self.line_history_ids:
+            if line.product_id.id not in count_product.keys():
+                if line.purchase_qty > 0:
+                    average_purchase_cost = line.purchase_value / line.purchase_qty
+                    count_product[line.product_id.id] = average_purchase_cost
+                else:
+                    count_product[line.product_id.id] = 0
+            line.average_purchase_cost = count_product[line.product_id.id]
+
     def action_start(self):
-        for inventory in self.filtered(
-            lambda x: x.state not in ('done', 'cancel')):
+        for inventory in self.filtered(lambda x: x.state not in ('done', 'cancel')):
             if not inventory.line_ids:
                 inventory._get_inventory_lines_values_new()
         return True
-
-    # @api.multi
-    # def price_calculation(self, line, evaluation_type, domain):
-    #     order = 'date desc, id desc'
-    #     move_obj = self.env['stock.move']
-    #     move_ids = move_obj.search(domain, order=order)
-    #     tuples = []
-    #     qty_to_go = line.product_qty
-    #     older_qty = line.product_qty
-    #     invoice_data_incomplete = False
-    #     flag = False
-    #     for move in move_ids:
-    #         for move_line in move.move_line_ids:
-    #             # Convert to UoM of product each time
-    #             uom_from = move.product_uom
-    #             qty_from = move_line.qty_done
-    #             product_qty = uom_from._compute_quantity(
-    #                 qty_from, move.product_id.uom_id)
-    #             # Get price from purchase line
-    #             purchase_price_unit = 0
-    #             price_unit = 0
-    #             last_purchase_cost = 0
-    #             if move.purchase_line_id:
-    #                 if move.purchase_line_id.invoice_lines:
-    #                     inv_lines = move.purchase_line_id.invoice_lines.filtered(
-    #                         lambda x: x.invoice_id.state in ['open', 'paid'])
-    #                     if inv_lines:
-    #                         price_unit = sum(
-    #                             l.price_subtotal for l in inv_lines) / sum(
-    #                             l.quantity for l in inv_lines)
-    #                         # check for last purchase cost
-    #                         if move.purchase_line_id.qty_invoiced > 0:
-    #                             line_sorted = inv_lines.sorted(
-    #                                 key=lambda l: l.invoice_id.date_invoice,
-    #                                 reverse=True)
-    #                             last_purchase_cost = line_sorted[0].price_unit
-    #                 else:
-    #                     invoice_data_incomplete = True
-    #                 purchase_price_unit = move.purchase_line_id.price_subtotal / move.purchase_line_id.product_qty
-    #             if evaluation_type == 'fifo':
-    #                 if qty_to_go - product_qty >= 0:
-    #                     tuples.append((move.product_id.id, product_qty,
-    #                                    price_unit, qty_from,
-    #                                    purchase_price_unit,
-    #                                    invoice_data_incomplete,
-    #                                    last_purchase_cost))
-    #                     qty_to_go -= product_qty
-    #                 else:
-    #                     tuples.append((
-    #                         move.product_id.id, qty_to_go, price_unit,
-    #                         qty_from * qty_to_go / product_qty,
-    #                         purchase_price_unit,
-    #                         invoice_data_incomplete,
-    #                         last_purchase_cost))
-    #                     flag = True
-    #                     break
-    #             if evaluation_type == 'lifo':
-    #                 # sale
-    #                 if move.location_id.usage == 'internal' and \
-    #                     move.location_dest_id.usage != 'internal':
-    #                     older_qty += product_qty
-    #                 # purchase
-    #                 if move.location_id.usage != 'internal' and \
-    #                     move.location_dest_id.usage == 'internal':
-    #                     older_qty -= product_qty
-    #                     if qty_to_go > older_qty > 0:
-    #                         tuples.append((move.product_id.id,
-    #                                        qty_to_go - older_qty, price_unit,
-    #                                        qty_from, purchase_price_unit,
-    #                                        invoice_data_incomplete,
-    #                                        last_purchase_cost))
-    #                         qty_to_go = older_qty
-    #                     elif qty_to_go > older_qty <= 0:
-    #                         tuples.append((move.product_id.id, qty_to_go,
-    #                                        price_unit,
-    #                                        qty_from * qty_to_go / product_qty,
-    #                                        purchase_price_unit,
-    #                                        invoice_data_incomplete,
-    #                                        last_purchase_cost))
-    #                         flag = True
-    #                         break
-    #             if evaluation_type == 'average':
-    #                 tuples.append((move.product_id.id, product_qty,
-    #                                price_unit, qty_from, purchase_price_unit,
-    #                                invoice_data_incomplete,
-    #                                last_purchase_cost))
-    #         if flag:
-    #             break
-    #     return tuples
 
 
 class InventoryLine(models.TransientModel):

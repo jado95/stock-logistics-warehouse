@@ -40,12 +40,14 @@
                                     <field name="product_qty" readonly="1"/>
                                     <field name="company_id" readonly="1" groups="base.group_multi_company"/>
                                     <field name="location_id" readonly="1"/>
-                                    <field name="fifo_cost" invisible="1" readonly="1"/>
-                                    <field name="fifo_purchase_cost" invisible="1" readonly="1"/>
-                                    <field name="lifo_cost" invisible="1" readonly="1"/>
-                                    <field name="lifo_purchase_cost" invisible="1" readonly="1"/>
+                                    <field name="purchase_qty" readonly="1"/>
+                                    <field name="purchase_value" readonly="1"/>
+                                    <!--                                    <field name="fifo_cost" invisible="1" readonly="1"/>-->
+                                    <!--                                    <field name="fifo_purchase_cost" invisible="1" readonly="1"/>-->
+                                    <!--                                    <field name="lifo_cost" invisible="1" readonly="1"/>-->
+                                    <!--                                    <field name="lifo_purchase_cost" invisible="1" readonly="1"/>-->
                                     <field name="last_purchase_cost" readonly="1"/>
-<!--                                    <field name="average_cost" readonly="1"/>-->
+                                    <!--                                    <field name="average_cost" readonly="1"/>-->
                                     <field name="average_purchase_cost" readonly="1"/>
                                     <field name="standard_cost" readonly="1"/>
                                     <field name="list_price" readonly="1"/>
@@ -59,6 +61,8 @@
                                             <field name="date_evaluation"/>
                                             <field name="company_id" groups="base.group_multi_company"/>
                                             <field name="location_id"/>
+                                            <field name="purchase_qty" readonly="1"/>
+                                            <field name="purchase_value" readonly="1"/>
                                             <field name="fifo_purchase_cost" invisible="1"/>
                                             <field name="lifo_purchase_cost" invisible="1"/>
                                             <field name="average_cost"/>
