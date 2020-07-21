@@ -12,6 +12,9 @@ class ProductCostEvaluationHistory(models.Model):
     product_id = fields.Many2one(
         comodel_name='product.product',
         string='Product')
+    product_active = fields.Boolean(string='Product Active',
+                                    related='product_id.active',
+                                    store=True)
     date_evaluation = fields.Date(
         string='Evaluation date')
     product_qty = fields.Float(
